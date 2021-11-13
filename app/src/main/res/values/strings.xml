@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Chhaya Notes</string>
+    <string name="text_search">Search</string>
+    <string name="text_search_notes">Search Notes</string>
 </resources>
