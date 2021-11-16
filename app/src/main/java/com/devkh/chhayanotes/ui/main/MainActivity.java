@@ -1,14 +1,17 @@
 package com.devkh.chhayanotes.ui.main;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 
 import com.devkh.chhayanotes.R;
-import com.devkh.chhayanotes.data.local.AppDatabase;
 import com.devkh.chhayanotes.data.model.local.Note;
 
 import java.util.ArrayList;
@@ -17,17 +20,28 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView rcvNote;
-    private NoteViewModel noteViewModel;
+    private MainViewModel mMainViewModel;
+    private List<Note> dataSet;
+    private NoteAdapter noteAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
-
         // init RecyclerView Note
         rcvNote = findViewById(R.id.rcv_note);
+
+        // init view model
+        mMainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+
+        mMainViewModel.getNotes().observe(this, new Observer<List<Note>>() {
+            @Override
+            public void onChanged(List<Note> notes) {
+                Log.i("TAG", "onChanged: " + notes);
+                noteAdapter.setDataSet(notes);
+            }
+        });
 
         // create layout manager obj
         StaggeredGridLayoutManager layoutManager =
@@ -36,30 +50,22 @@ public class MainActivity extends AppCompatActivity {
 
         rcvNote.setLayoutManager(layoutManager);
 
-        List<Note> dataSet = new ArrayList<>();
-
-        Note note1 = new Note();
-        note1.setNoteTitle("My note 1");
-        note1.setNoteContent("My note content 1");
-        note1.setNoteSavedDate((long)12341234);
-
-        Note note2 = new Note();
-        note2.setNoteTitle("My note 2");
-        note2.setNoteContent("Lionel Andrés Messi, also known as Leo Messi, is an Argentine professional footballer who plays as a forward for Ligue 1 club Paris Saint-Germain and capta...");
-        note2.setNoteSavedDate((long)12341234);
-
-        Note note3 = new Note();
-        note3.setNoteTitle("My note 3");
-        note3.setNoteContent("Lionel Andrés Messi, also known as Leo Messi, is an Argentine professional footballer who plays as a forward for Ligue 1 club Paris Saint-Germain and capta...");
-        note3.setNoteSavedDate((long)12341234);
-
-        dataSet.add(note1);
-        dataSet.add(note2);
-        dataSet.add(note3);
-
         // create adapter obj
-        NoteAdapter noteAdapter = new NoteAdapter(this, dataSet);
+        dataSet = new ArrayList<>();
+        noteAdapter = new NoteAdapter(this, dataSet);
         rcvNote.setAdapter(noteAdapter);
+
+        Note note = new Note();
+        note.setNoteTitle("New note qwer qwer qwer");
+        note.setNoteContent("Hello qwer qwer qwer");
+        note.setNoteSavedDate(System.currentTimeMillis());
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mMainViewModel.createNewNote(note);
+            }
+        }, 10000);
 
     }
 }

@@ -1,5 +1,7 @@
 package com.devkh.chhayanotes.data.local;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -14,13 +16,13 @@ import java.util.List;
 public interface NoteDao {
 
     @Query(value = "SELECT * FROM notes")
-    List<Note> select();
+    LiveData<List<Note>> select();
 
     @Query(value = "SELECT * FROM notes WHERE id = :id")
-    Note select(Integer id);
+    LiveData<Note> select(Integer id);
 
     @Query(value = "SELECT * FROM notes WHERE title LIKE :title")
-    List<Note> select(String title);
+    LiveData<List<Note>> select(String title);
 
     @Insert
     void insert(Note note);

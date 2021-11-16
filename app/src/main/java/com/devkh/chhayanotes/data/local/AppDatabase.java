@@ -19,12 +19,16 @@ public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
 
     /* Init Instance */
-    public static synchronized AppDatabase getInstance(Context context) {
+    static AppDatabase getInstance(final Context context) {
         if (INSTANCE == null) {
-            INSTANCE = Room.databaseBuilder(context,
-                    AppDatabase.class, AppConstants.APP_DB_NAME)
-                    .allowMainThreadQueries()
-                    .build();
+            synchronized (AppDatabase.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = Room.databaseBuilder(context,
+                            AppDatabase.class, AppConstants.APP_DB_NAME)
+                            .allowMainThreadQueries()
+                            .build();
+                }
+            }
         }
         return INSTANCE;
     }
