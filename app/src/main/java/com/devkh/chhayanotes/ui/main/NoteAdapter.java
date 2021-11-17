@@ -2,6 +2,7 @@ package com.devkh.chhayanotes.ui.main;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.devkh.chhayanotes.R;
 import com.devkh.chhayanotes.data.model.local.Note;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
@@ -21,16 +23,17 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     private List<Note> mDataSet;
     private LayoutInflater inflater;
 
-    public NoteAdapter(Context context, List<Note> dataSet) {
-        this.mDataSet = dataSet;
+    public NoteAdapter(Context context) {
         this.inflater = LayoutInflater.from(context);
     }
 
     public void setDataSet(List<Note> dataSet) {
         if (mDataSet == null) {
+            Log.i("TAG", "setDataSet: New");
             mDataSet = dataSet;
             notifyItemRangeChanged(0, dataSet.size());
         } else {
+            Log.i("TAG", "setDataSet: Old");
             DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
                 @Override
                 public int getOldListSize() {
@@ -44,21 +47,21 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
                 @Override
                 public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    return mDataSet.get(oldItemPosition).getNoteId().equals(dataSet.get(newItemPosition).getNoteId());
+                    return mDataSet.get(oldItemPosition).getNoteId()
+                            .equals(dataSet.get(newItemPosition).getNoteId());
                 }
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    Note newNote = dataSet.get(newItemPosition);
-                    Note oldNote = mDataSet.get(oldItemPosition);
-                    return newNote.getNoteId().equals(oldNote.getNoteId())
-                            && TextUtils.equals(newNote.getNoteTitle(), oldNote.getNoteTitle());
+                    return mDataSet.get(oldItemPosition).getNoteId()
+                            .equals(dataSet.get(newItemPosition).getNoteId())
+                            && TextUtils.equals(mDataSet.get(oldItemPosition).getNoteTitle(), dataSet.get(newItemPosition).getNoteTitle())
+                            && TextUtils.equals(mDataSet.get(oldItemPosition).getNoteContent(), dataSet.get(newItemPosition).getNoteContent());
                 }
             });
             mDataSet = dataSet;
             result.dispatchUpdatesTo(this);
         }
-
     }
 
     @NonNull
@@ -77,7 +80,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     @Override
     public int getItemCount() {
-        return mDataSet.size();
+        return mDataSet == null ? 0 : mDataSet.size();
     }
 
     public class NoteViewHolder extends RecyclerView.ViewHolder {

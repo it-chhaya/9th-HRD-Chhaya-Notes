@@ -3,8 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/HRD-9th-Generation/Android/5.Homework-and-Quiz/source-code/ChhayaNotes/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/HRD-9th-Generation/Android/5.Homework-and-Quiz/source-code/ChhayaNotes/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.3536458333333333" />
+        <entry key="..\:/HRD-9th-Generation/Android/5.Homework-and-Quiz/source-code/ChhayaNotes/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/HRD-9th-Generation/Android/5.Homework-and-Quiz/source-code/ChhayaNotes/app/src/main/res/layout/activity_saved_note.xml" value="0.22" />
         <entry key="..\:/HRD-9th-Generation/Android/5.Homework-and-Quiz/source-code/ChhayaNotes/app/src/main/res/layout/list_note.xml" value="0.67" />
+        <entry key="..\:/HRD-9th-Generation/Android/5.Homework-and-Quiz/source-code/ChhayaNotes/app/src/main/res/menu/menu_saved_note.xml" value="0.5" />
         <entry key="..\:/HRD-9th-Generation/Android/5.Homework-and-Quiz/source-code/ChhayaNotes/app/src/main/res/menu/menu_top_app_bar.xml" value="0.17083333333333334" />
       </map>
     </option>

@@ -15,13 +15,13 @@ import java.util.List;
 @Dao
 public interface NoteDao {
 
-    @Query(value = "SELECT * FROM notes")
+    @Query(value = "SELECT * FROM notes ORDER BY id DESC")
     LiveData<List<Note>> select();
 
     @Query(value = "SELECT * FROM notes WHERE id = :id")
     LiveData<Note> select(Integer id);
 
-    @Query(value = "SELECT * FROM notes WHERE title LIKE :title")
+    @Query(value = "SELECT * FROM notes WHERE title LIKE '%' || :title || '%'")
     LiveData<List<Note>> select(String title);
 
     @Insert

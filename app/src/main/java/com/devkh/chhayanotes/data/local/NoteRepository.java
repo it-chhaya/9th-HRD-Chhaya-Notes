@@ -9,8 +9,10 @@ import java.util.List;
 
 public interface NoteRepository {
 
-    LiveData<List<Note>> getAllNotes();
+    LiveData<List<Note>> findAllNotes();
 
     void createNewNote(Note note);
+
+    LiveData<List<Note>> searchNotesByTitle(String title);
 
 }
