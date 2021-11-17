@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Chhaya Notes</string>
     <string name="text_search">Search</string>
+    <string name="text_create_new_note">Create new note</string>
+    <string name="action_save">Save</string>
 </resources>
