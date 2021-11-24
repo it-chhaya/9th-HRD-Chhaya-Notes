@@ -2,6 +2,7 @@ package com.devkh.chhayanotes.data.local;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -14,12 +15,19 @@ import java.util.List;
 
 public class NoteRepositoryImpl implements NoteRepository {
 
-    private NoteDao mNoteDao;
+    private final NoteDao mNoteDao;
     private MediatorLiveData<List<Note>> mObservableNotes;
+    private MediatorLiveData<Note> mObservableSavedNote;
 
     // Expose live data for UI subscribe
     public LiveData<List<Note>> getObservableNotes() {
         return mObservableNotes;
+    }
+
+    public LiveData<Note> getObservableSavedNote() {
+        if (mObservableSavedNote == null)
+            mObservableSavedNote = new MediatorLiveData<>();
+        return mObservableSavedNote;
     }
 
     public NoteRepositoryImpl(Application application) {
@@ -51,7 +59,32 @@ public class NoteRepositoryImpl implements NoteRepository {
 
     @Override
     public void createNewNote(Note note) {
-        mNoteDao.insert(note);
+        int newId = (int) mNoteDao.insert(note);
+        if (mObservableSavedNote == null)
+            mObservableSavedNote = new MediatorLiveData<>();
+        mObservableSavedNote.addSource(mNoteDao.select(newId), new Observer<Note>() {
+            @Override
+            public void onChanged(Note note) {
+                mObservableSavedNote.setValue(note);
+            }
+        });
+    }
+
+    @Override
+    public void editNote(Note note) {
+        mNoteDao.update(note);
+        mObservableSavedNote.addSource(mNoteDao.select(note.getNoteId()), new Observer<Note>() {
+            @Override
+            public void onChanged(Note note) {
+                mObservableSavedNote.setValue(note);
+            }
+        });
+    }
+
+    @Override
+    public void deleteNote(Note note) {
+        mNoteDao.delete(note);
+        mObservableSavedNote.setValue(null);
     }
 
     @Override

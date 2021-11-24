@@ -1,10 +1,10 @@
 package com.devkh.chhayanotes.data.local;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -24,8 +24,8 @@ public interface NoteDao {
     @Query(value = "SELECT * FROM notes WHERE title LIKE '%' || :title || '%'")
     LiveData<List<Note>> select(String title);
 
-    @Insert
-    void insert(Note note);
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    long insert(Note note);
 
     @Delete
     void delete(Note note);

@@ -22,13 +22,14 @@ import com.devkh.chhayanotes.R;
 import com.devkh.chhayanotes.data.local.AppDatabase;
 import com.devkh.chhayanotes.data.model.local.Note;
 import com.devkh.chhayanotes.ui.note.SavedNoteActivity;
+import com.devkh.chhayanotes.ui.note.SavedNoteViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteAdapterListener {
 
     private RecyclerView rcvNote;
     private FloatingActionButton mFabCreateNewNote;
@@ -126,5 +127,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    
+
+    @Override
+    public void onItemSelected(Note note) {
+        Log.i(TAG, "onItemSelected: " + note);
+        Intent intent = new Intent(this, SavedNoteActivity.class);
+        intent.putExtra("extra_note", note);
+        startActivity(intent);
+    }
+
 }

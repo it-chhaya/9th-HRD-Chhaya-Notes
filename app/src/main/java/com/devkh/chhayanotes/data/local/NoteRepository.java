@@ -13,6 +13,10 @@ public interface NoteRepository {
 
     void createNewNote(Note note);
 
+    void editNote(Note note);
+
+    void deleteNote(Note note);
+
     LiveData<List<Note>> searchNotesByTitle(String title);
 
 }

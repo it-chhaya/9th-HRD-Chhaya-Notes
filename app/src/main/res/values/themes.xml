@@ -7,7 +7,7 @@
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">#F96C6C</item>
-        <item name="colorSecondaryVariant">@color/white</item>
+        <item name="colorSecondaryVariant">@color/brand_700</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
@@ -17,5 +17,12 @@
         <item name="android:textColorHint">#E1D3D3D3</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="queryHint">Search notes...</item>
+        <!-- Alert dialog -->
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
+    </style>
+    <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorPrimary">#F96C6C</item>
+        <item name="colorSurface">#3D3D3D</item>
+        <item name="colorOnSurface">@color/white</item>
     </style>
 </resources>

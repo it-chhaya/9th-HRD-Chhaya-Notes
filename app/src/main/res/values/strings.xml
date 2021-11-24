@@ -2,5 +2,16 @@
     <string name="app_name">Chhaya Notes</string>
     <string name="text_search">Search</string>
     <string name="text_create_new_note">Create new note</string>
+
+    <!-- Delete dialog -->
+    <string name="delete_dialog_title">Delete</string>
+    <string name="delete_dialog_content">This note will be deleted</string>
+
+    <!-- Validation messages -->
+    <string name="invalid_title">Invalid title</string>
+
+    <!-- Actions -->
     <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_cancel">Cancel</string>
 </resources>

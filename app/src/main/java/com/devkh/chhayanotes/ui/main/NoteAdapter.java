@@ -9,22 +9,29 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.devkh.chhayanotes.R;
 import com.devkh.chhayanotes.data.model.local.Note;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
 
     private List<Note> mDataSet;
-    private LayoutInflater inflater;
+    private final LayoutInflater mInflater;
+
+    private NoteAdapterListener mListener;
 
     public NoteAdapter(Context context) {
-        this.inflater = LayoutInflater.from(context);
+        mInflater = LayoutInflater.from(context);
+        try {
+            mListener = (NoteAdapterListener) context;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setDataSet(List<Note> dataSet) {
@@ -67,15 +74,15 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @NonNull
     @Override
     public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.list_note, parent, false);
+        View view = mInflater.inflate(R.layout.list_note, parent, false);
         return new NoteViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
-        holder.textViewNoteTitle.setText(mDataSet.get(position).getNoteTitle());
-        holder.textViewNoteContent.setText(mDataSet.get(position).getNoteContent());
-        holder.textViewNoteSavedDate.setText(mDataSet.get(position).getNoteSavedDate() + "");
+        holder.mTextViewNoteTitle.setText(mDataSet.get(position).getNoteTitle());
+        holder.mTextViewNoteContent.setText(mDataSet.get(position).getNoteContent());
+        holder.mTextViewNoteSavedDate.setText(mDataSet.get(position).getNoteSavedDate() + "");
     }
 
     @Override
@@ -83,21 +90,33 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         return mDataSet == null ? 0 : mDataSet.size();
     }
 
-    public class NoteViewHolder extends RecyclerView.ViewHolder {
+    public class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView textViewNoteTitle;
-        TextView textViewNoteContent;
-        TextView textViewNoteSavedDate;
+        TextView mTextViewNoteTitle;
+        TextView mTextViewNoteContent;
+        TextView mTextViewNoteSavedDate;
 
         public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            textViewNoteTitle = itemView.findViewById(R.id.note_title);
-            textViewNoteContent = itemView.findViewById(R.id.note_content);
-            textViewNoteSavedDate = itemView.findViewById(R.id.note_saved_date);
+            itemView.setOnClickListener(this);
+
+            mTextViewNoteTitle = itemView.findViewById(R.id.note_title);
+            mTextViewNoteContent = itemView.findViewById(R.id.note_content);
+            mTextViewNoteSavedDate = itemView.findViewById(R.id.note_saved_date);
 
         }
 
+        @Override
+        public void onClick(View view) {
+            mListener.onItemSelected(mDataSet.get(getAdapterPosition()));
+        }
+
     }
+
+    public interface NoteAdapterListener {
+        void onItemSelected(Note note);
+    }
+
 
 }
