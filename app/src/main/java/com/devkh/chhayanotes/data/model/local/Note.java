@@ -7,11 +7,12 @@ import androidx.room.PrimaryKey;
 
 import com.devkh.chhayanotes.utils.AppConstants;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 
 @Entity(tableName = AppConstants.TB_NOTES)
-public class Note {
+public class Note implements Serializable {
 
     public Note() {}
 

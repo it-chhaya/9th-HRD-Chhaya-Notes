@@ -16,10 +16,17 @@ public class NoteRepositoryImpl implements NoteRepository {
 
     private NoteDao mNoteDao;
     private MediatorLiveData<List<Note>> mObservableNotes;
+    private MediatorLiveData<Note> mObservableNote;
 
     // Expose live data for UI subscribe
     public LiveData<List<Note>> getObservableNotes() {
         return mObservableNotes;
+    }
+
+    public LiveData<Note> getObservableNote() {
+        if (mObservableNote == null)
+            mObservableNote = new MediatorLiveData<>();
+        return mObservableNote;
     }
 
     public NoteRepositoryImpl(Application application) {
@@ -51,7 +58,29 @@ public class NoteRepositoryImpl implements NoteRepository {
 
     @Override
     public void createNewNote(Note note) {
-        mNoteDao.insert(note);
+        int generatedId = (int) mNoteDao.insert(note);
+        mObservableNote.addSource(mNoteDao.select(generatedId), new Observer<Note>() {
+            @Override
+            public void onChanged(Note note) {
+                mObservableNote.setValue(note);
+            }
+        });
+    }
+
+    @Override
+    public void deleteNote(Note note) {
+        mNoteDao.delete(note);
+    }
+
+    @Override
+    public void editNote(Note note) {
+        mNoteDao.update(note);
+        mObservableNote.addSource(mNoteDao.select(note.getNoteId()), new Observer<Note>() {
+            @Override
+            public void onChanged(Note note) {
+                mObservableNote.setValue(note);
+            }
+        });
     }
 
     @Override

@@ -21,10 +21,12 @@ import java.util.List;
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
 
     private List<Note> mDataSet;
-    private LayoutInflater inflater;
+    private LayoutInflater mInflater;
+    private OnItemClickListener mListener;
 
     public NoteAdapter(Context context) {
-        this.inflater = LayoutInflater.from(context);
+        mInflater = LayoutInflater.from(context);
+        mListener = (OnItemClickListener) context;
     }
 
     public void setDataSet(List<Note> dataSet) {
@@ -67,7 +69,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @NonNull
     @Override
     public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.list_note, parent, false);
+        View view = mInflater.inflate(R.layout.list_note, parent, false);
         return new NoteViewHolder(view);
     }
 
@@ -96,8 +98,20 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             textViewNoteContent = itemView.findViewById(R.id.note_content);
             textViewNoteSavedDate = itemView.findViewById(R.id.note_saved_date);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // trigger event
+                    mListener.onItemClicked(mDataSet.get(getAdapterPosition()));
+                }
+            });
+
         }
 
+    }
+
+    public interface OnItemClickListener {
+        void onItemClicked(Note note);
     }
 
 }

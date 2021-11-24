@@ -28,7 +28,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NoteAdapter.OnItemClickListener {
 
     private RecyclerView rcvNote;
     private FloatingActionButton mFabCreateNewNote;
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private NoteAdapter mNoteAdapter;
 
     private final static String TAG = MainActivity.class.getName();
+    public final static String EXTRA_NOTE = "extra_note";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,5 +127,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    
+
+    @Override
+    public void onItemClicked(Note note) {
+        // Open SavedNoteActivity with put extra note
+        Intent intent = new Intent(this, SavedNoteActivity.class);
+        intent.putExtra(EXTRA_NOTE, note);
+        startActivity(intent);
+    }
 }

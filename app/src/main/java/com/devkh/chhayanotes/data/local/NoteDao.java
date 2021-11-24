@@ -25,7 +25,7 @@ public interface NoteDao {
     LiveData<List<Note>> select(String title);
 
     @Insert
-    void insert(Note note);
+    long insert(Note note);
 
     @Delete
     void delete(Note note);
